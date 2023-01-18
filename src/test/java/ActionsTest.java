@@ -12,11 +12,13 @@ import org.apache.logging.log4j.Logger;
 
 public class ActionsTest {
 
-    WebDriver driver;
     String login = "otus-test@mail.ru";
     String password = "1Testtest+";
-    private Actions action = new Actions(driver);
+
+    private WebDriver driver;
     private WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    private Actions action = new Actions(driver);
+
 
 
     @BeforeAll
@@ -56,16 +58,16 @@ public class ActionsTest {
         action.moveToElement(driver.findElement(By.cssSelector(".js-lk-cv-dependent-slave-city"))).click().perform();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("button.lk-cv-block__select-option[title='Москва']")));
         driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='Москва']")).click();
-        action.moveToElement(driver.findElement(By.xpath("//div[3]/div[2]/div/label/div"))).click().perform();
+        action.moveToElement(driver.findElement(By.cssSelector("[name='english_level'] ~ div"))).click().perform();
         driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='Средний (Intermediate)']")).click();
 
-        action.moveToElement(driver.findElement(By.cssSelector(".input_straight-bottom-right"))).click().perform();
+        action.moveToElement(driver.findElement(By.cssSelector("input[name='contact-0-service']~div"))).click().perform();
         driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='WhatsApp']")).click();
         driver.findElement(By.cssSelector("#id_contact-0-value")).clear();
         driver.findElement(By.cssSelector("#id_contact-0-value")).sendKeys("+7 999 999 99 99");
         driver.findElement(By.cssSelector(".js-lk-cv-custom-select-add")).click();
-        action.moveToElement(driver.findElement(By.cssSelector("div.js-formset-row[data-num='1'] > div > div > div > div:nth-child(1)"))).click().perform();
-        driver.findElement(By.cssSelector("div.js-formset-row[data-num='1'] > div > div > div > div > div > div > button:nth-child(7)")).click();
+        action.moveToElement(driver.findElement(By.cssSelector("input[name='contact-1-service']~div"))).click().perform();
+        driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='Telegram']")).click();
         driver.findElement(By.cssSelector("#id_contact-1-value")).clear();
         driver.findElement(By.cssSelector("#id_contact-1-value")).sendKeys("+7 999 000 00 00");
         driver.findElement(By.cssSelector(".button_blue.lk-cv-action-buttons__button.js-disable-on-submit")).submit();
