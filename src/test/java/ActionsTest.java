@@ -15,6 +15,9 @@ public class ActionsTest {
     WebDriver driver;
     String login = "otus-test@mail.ru";
     String password = "1Testtest+";
+    private Actions action = new Actions(driver);
+    private WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
 
     @BeforeAll
     public static void open() {
@@ -35,10 +38,7 @@ public class ActionsTest {
     }
 
     @Test
-    public void test() throws InterruptedException {
-
-        Actions action = new Actions(driver);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    public void otusLKTest() throws InterruptedException {
 
         otusAuthorise();
 
@@ -61,10 +61,12 @@ public class ActionsTest {
 
         action.moveToElement(driver.findElement(By.cssSelector(".input_straight-bottom-right"))).click().perform();
         driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='WhatsApp']")).click();
+        driver.findElement(By.cssSelector("#id_contact-0-value")).clear();
         driver.findElement(By.cssSelector("#id_contact-0-value")).sendKeys("+7 999 999 99 99");
         driver.findElement(By.cssSelector(".js-lk-cv-custom-select-add")).click();
         action.moveToElement(driver.findElement(By.cssSelector("div.js-formset-row[data-num='1'] > div > div > div > div:nth-child(1)"))).click().perform();
         driver.findElement(By.cssSelector("div.js-formset-row[data-num='1'] > div > div > div > div > div > div > button:nth-child(7)")).click();
+        driver.findElement(By.cssSelector("#id_contact-1-value")).clear();
         driver.findElement(By.cssSelector("#id_contact-1-value")).sendKeys("+7 999 000 00 00");
         driver.findElement(By.cssSelector(".button_blue.lk-cv-action-buttons__button.js-disable-on-submit")).submit();
 
@@ -88,9 +90,6 @@ public class ActionsTest {
     }
 
     public void otusAuthorise() {
-
-        Actions action = new Actions(driver);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         driver.get("https://otus.ru/");
         driver.findElement(By.cssSelector(".header3__button-sign-in-container")).click();
