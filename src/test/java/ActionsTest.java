@@ -16,6 +16,8 @@ public class ActionsTest {
     String password = "1Testtest+";
 
     private WebDriver driver;
+    private Actions action;
+    private WebDriverWait wait;
 
 
     @BeforeAll
@@ -27,10 +29,9 @@ public class ActionsTest {
     public void init() {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
+        action = new Actions(driver);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
-
-    private Actions action = new Actions(driver);
-    private WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
     @AfterEach
     public void close() {
@@ -48,10 +49,14 @@ public class ActionsTest {
         driver.findElement(By.cssSelector(".input[name='fname']")).sendKeys("Иван");
         driver.findElement(By.cssSelector(".input[name='lname']")).clear();
         driver.findElement(By.cssSelector(".input[name='lname']")).sendKeys("Иванов");
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".input[name='fname_latin']")));
+        driver.findElement(By.cssSelector(".input[name='fname_latin']")).clear();
         driver.findElement(By.cssSelector(".input[name='fname_latin']")).sendKeys("Ivan");
+        driver.findElement(By.cssSelector(".input[name='lname_latin']")).clear();
         driver.findElement(By.cssSelector(".input[name='lname_latin']")).sendKeys("Ivanov");
         driver.findElement(By.cssSelector(".input[name='blog_name']")).clear();
         driver.findElement(By.cssSelector(".input[name='blog_name']")).sendKeys("Иван");
+        driver.findElement(By.cssSelector(".input[name='date_of_birth']")).clear();
         driver.findElement(By.cssSelector(".input[name='date_of_birth']")).sendKeys("11.11.1991");
         action.moveToElement(driver.findElement(By.cssSelector(".js-lk-cv-dependent-master"))).click().perform();
         driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='Россия']")).click();
@@ -87,68 +92,6 @@ public class ActionsTest {
         Assertions.assertEquals("Россия", driver.findElement(By.cssSelector(".js-lk-cv-dependent-master")).getText());
         Assertions.assertEquals("Москва", driver.findElement(By.cssSelector(".js-lk-cv-dependent-slave-city")).getText());
         Assertions.assertEquals("Средний (Intermediate)", driver.findElement(By.cssSelector("[name='english_level'] ~ div")).getText());
-        Assertions.assertEquals("+7 999 000 00 00", driver.findElement(By.cssSelector("#id_contact-0-value")).getAttribute("value"));
-        Assertions.assertEquals("+7 999 999 99 99", driver.findElement(By.cssSelector("#id_contact-1-value")).getAttribute("value"));
-    }
-
-    public void otusAuthorise() {
-
-        driver.get("https://otus.ru/");
-        driver.findElement(By.cssSelector(".header3__button-sign-in-container")).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".new-input[name='email']")));
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".new-input[name='password']")));
-        driver.findElement(By.cssSelector(".new-input[name='email']")).sendKeys(login);
-        driver.findElement(By.cssSelector(".new-input[name='password']")).sendKeys(password);
-        driver.findElement(By.cssSelector(".new-button[type='submit']")).submit();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".header3__user-info-avatar")));
-        action.moveToElement(driver.findElement(By.cssSelector(".header3__user-info-avatar"))).perform();
-        driver.findElement(By.cssSelector("div.header3__user-info-popup-links > a")).click();
-    }
-}
-
-        driver.findElement(By.cssSelector(".input[name='fname']")).clear();
-        driver.findElement(By.cssSelector(".input[name='fname']")).sendKeys("Иван");
-        driver.findElement(By.cssSelector(".input[name='lname']")).clear();
-        driver.findElement(By.cssSelector(".input[name='lname']")).sendKeys("Иванов");
-        driver.findElement(By.cssSelector(".input[name='fname_latin']")).sendKeys("Ivan");
-        driver.findElement(By.cssSelector(".input[name='lname_latin']")).sendKeys("Ivanov");
-        driver.findElement(By.cssSelector(".input[name='blog_name']")).clear();
-        driver.findElement(By.cssSelector(".input[name='blog_name']")).sendKeys("Иван");
-        driver.findElement(By.cssSelector(".input[name='date_of_birth']")).sendKeys("11.11.1991");
-        action.moveToElement(driver.findElement(By.cssSelector(".js-lk-cv-dependent-master"))).click().perform();
-        driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='Россия']")).click();
-        action.moveToElement(driver.findElement(By.cssSelector(".js-lk-cv-dependent-slave-city"))).click().perform();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("button.lk-cv-block__select-option[title='Москва']")));
-        driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='Москва']")).click();
-        action.moveToElement(driver.findElement(By.cssSelector("[name='english_level'] ~ div"))).click().perform();
-        driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='Средний (Intermediate)']")).click();
-
-        action.moveToElement(driver.findElement(By.cssSelector("input[name='contact-0-service']~div"))).click().perform();
-        driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='WhatsApp']")).click();
-        driver.findElement(By.cssSelector("#id_contact-0-value")).clear();
-        driver.findElement(By.cssSelector("#id_contact-0-value")).sendKeys("+7 999 999 99 99");
-        driver.findElement(By.cssSelector(".js-lk-cv-custom-select-add")).click();
-        action.moveToElement(driver.findElement(By.cssSelector("input[name='contact-1-service']~div"))).click().perform();
-        driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='Telegram']")).click();
-        driver.findElement(By.cssSelector("#id_contact-1-value")).clear();
-        driver.findElement(By.cssSelector("#id_contact-1-value")).sendKeys("+7 999 000 00 00");
-        driver.findElement(By.cssSelector(".button_blue.lk-cv-action-buttons__button.js-disable-on-submit")).submit();
-
-        driver.manage().deleteAllCookies();
-        driver.navigate().refresh();
-
-        otusAuthorise();
-
-        Assertions.assertEquals("Иван", driver.findElement(By.cssSelector(".input[name='fname']")).getAttribute("value"));
-        Assertions.assertEquals("Иванов", driver.findElement(By.cssSelector(".input[name='lname']")).getAttribute("value"));
-        Assertions.assertEquals("Ivan", driver.findElement(By.cssSelector(".input[name='fname_latin']")).getAttribute("value"));
-        Assertions.assertEquals("Ivanov", driver.findElement(By.cssSelector(".input[name='lname_latin']")).getAttribute("value"));
-        Assertions.assertEquals("Иван", driver.findElement(By.cssSelector(".input[name='blog_name']")).getAttribute("value"));
-        Assertions.assertEquals("11.11.1991", driver.findElement(By.cssSelector(".input[name='date_of_birth']")).getAttribute("value"));
-
-        Assertions.assertEquals("Россия", driver.findElement(By.cssSelector(".js-lk-cv-dependent-master")).getText());
-        Assertions.assertEquals("Москва", driver.findElement(By.cssSelector(".js-lk-cv-dependent-slave-city")).getText());
-        Assertions.assertEquals("Средний (Intermediate)", driver.findElement(By.xpath("//div[3]/div[2]/div/label/div")).getText());
         Assertions.assertEquals("+7 999 000 00 00", driver.findElement(By.cssSelector("#id_contact-0-value")).getAttribute("value"));
         Assertions.assertEquals("+7 999 999 99 99", driver.findElement(By.cssSelector("#id_contact-1-value")).getAttribute("value"));
     }
