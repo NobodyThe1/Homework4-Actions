@@ -19,7 +19,6 @@ public class ActionsTest {
     private Actions action;
     private WebDriverWait wait;
 
-
     @BeforeAll
     public static void open() {
         WebDriverManager.chromedriver().setup();
@@ -36,6 +35,7 @@ public class ActionsTest {
     @AfterEach
     public void close() {
         if (driver != null) {
+            driver.close();
             driver.quit();
         }
     }
@@ -61,20 +61,20 @@ public class ActionsTest {
         action.moveToElement(driver.findElement(By.cssSelector(".js-lk-cv-dependent-master"))).click().perform();
         driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='Россия']")).click();
         action.moveToElement(driver.findElement(By.cssSelector(".js-lk-cv-dependent-slave-city"))).click().perform();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("button.lk-cv-block__select-option[title='Москва']")));
-        driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='Москва']")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".js-custom-select-option[title='Москва']")));
+        driver.findElement(By.cssSelector(".js-custom-select-option[title='Москва']")).click();
         action.moveToElement(driver.findElement(By.cssSelector("[name='english_level'] ~ div"))).click().perform();
         driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='Средний (Intermediate)']")).click();
 
         action.moveToElement(driver.findElement(By.cssSelector("input[name='contact-0-service']~div"))).click().perform();
-        driver.findElement(By.cssSelector("[data-num] [data-selected-option-class] label ~ *:not(.hide) button[title='WhatsApp']")).click();
         driver.findElement(By.cssSelector("#id_contact-0-value")).clear();
-        driver.findElement(By.cssSelector("#id_contact-0-value")).sendKeys("+7 999 999 99 99");
+        driver.findElement(By.cssSelector("[data-num] [data-selected-option-class] label ~ *:not(.hide) button[title='WhatsApp']")).click();
+        driver.findElement(By.cssSelector("#id_contact-0-value")).sendKeys("+7 999 123 45 67");
         driver.findElement(By.cssSelector(".js-lk-cv-custom-select-add")).click();
         action.moveToElement(driver.findElement(By.cssSelector("input[name='contact-1-service']~div"))).click().perform();
-        driver.findElement(By.cssSelector("[data-num] [data-selected-option-class] label ~ *:not(.hide) button[data-value='telegram']")).click();
         driver.findElement(By.cssSelector("#id_contact-1-value")).clear();
-        driver.findElement(By.cssSelector("#id_contact-1-value")).sendKeys("+7 999 000 00 00");
+        driver.findElement(By.cssSelector("[data-num] [data-selected-option-class] label ~ *:not(.hide) button[data-value='telegram']")).click();
+        driver.findElement(By.cssSelector("#id_contact-1-value")).sendKeys("+7 999 876 54 32");
         driver.findElement(By.cssSelector(".button_blue.lk-cv-action-buttons__button.js-disable-on-submit")).submit();
 
         driver.manage().deleteAllCookies();
@@ -92,8 +92,8 @@ public class ActionsTest {
         Assertions.assertEquals("Россия", driver.findElement(By.cssSelector(".js-lk-cv-dependent-master")).getText());
         Assertions.assertEquals("Москва", driver.findElement(By.cssSelector(".js-lk-cv-dependent-slave-city")).getText());
         Assertions.assertEquals("Средний (Intermediate)", driver.findElement(By.cssSelector("[name='english_level'] ~ div")).getText());
-        Assertions.assertEquals("+7 999 000 00 00", driver.findElement(By.cssSelector("#id_contact-0-value")).getAttribute("value"));
-        Assertions.assertEquals("+7 999 999 99 99", driver.findElement(By.cssSelector("#id_contact-1-value")).getAttribute("value"));
+        Assertions.assertEquals("+7 999 876 54 32", driver.findElement(By.cssSelector("#id_contact-0-value")).getAttribute("value"));
+        Assertions.assertEquals("+7 999 123 45 67", driver.findElement(By.cssSelector("#id_contact-1-value")).getAttribute("value"));
     }
 
     public void otusAuthorise() {
