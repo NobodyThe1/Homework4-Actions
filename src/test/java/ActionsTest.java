@@ -100,9 +100,9 @@ public class ActionsTest {
 
         driver.get("https://otus.ru/");
         driver.findElement(By.cssSelector(".header3__button-sign-in-container")).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".new-input[name='email']")));
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".new-input[name='password']")));
-        driver.findElement(By.cssSelector(".new-input[name='email']")).sendKeys(login);
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector(".modal-container[data-modal-id='new-log-reg']:not(.hide-top)"))));
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector("[type='text'][name='email']:not(.hide)"))));
+        driver.findElement(By.cssSelector("[type='text'][name='email']:not(.hide)")).sendKeys(login);
         driver.findElement(By.cssSelector(".new-input[name='password']")).sendKeys(password);
         driver.findElement(By.cssSelector(".new-button[type='submit']")).submit();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".header3__user-info-avatar")));
