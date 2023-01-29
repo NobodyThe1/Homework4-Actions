@@ -2,6 +2,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -29,7 +30,7 @@ public class ActionsTest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         action = new Actions(driver);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(12));
     }
 
     @AfterEach
@@ -67,11 +68,13 @@ public class ActionsTest {
         driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='Средний (Intermediate)']")).click();
 
         action.moveToElement(driver.findElement(By.cssSelector("input[name='contact-0-service']~div"))).click().perform();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("id_contact-0-value")));
         driver.findElement(By.cssSelector("#id_contact-0-value")).clear();
         driver.findElement(By.cssSelector("[data-num] [data-selected-option-class] label ~ *:not(.hide) button[title='WhatsApp']")).click();
         driver.findElement(By.cssSelector("#id_contact-0-value")).sendKeys("+7 999 123 45 67");
         driver.findElement(By.cssSelector(".js-lk-cv-custom-select-add")).click();
         action.moveToElement(driver.findElement(By.cssSelector("input[name='contact-1-service']~div"))).click().perform();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("id_contact-1-value")));
         driver.findElement(By.cssSelector("#id_contact-1-value")).clear();
         driver.findElement(By.cssSelector("[data-num] [data-selected-option-class] label ~ *:not(.hide) button[data-value='telegram']")).click();
         driver.findElement(By.cssSelector("#id_contact-1-value")).sendKeys("+7 999 876 54 32");
@@ -92,6 +95,8 @@ public class ActionsTest {
         Assertions.assertEquals("Россия", driver.findElement(By.cssSelector(".js-lk-cv-dependent-master")).getText());
         Assertions.assertEquals("Москва", driver.findElement(By.cssSelector(".js-lk-cv-dependent-slave-city")).getText());
         Assertions.assertEquals("Средний (Intermediate)", driver.findElement(By.cssSelector("[name='english_level'] ~ div")).getText());
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("id_contact-0-value")));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("id_contact-1-value")));
         Assertions.assertEquals("+7 999 876 54 32", driver.findElement(By.cssSelector("#id_contact-0-value")).getAttribute("value"));
         Assertions.assertEquals("+7 999 123 45 67", driver.findElement(By.cssSelector("#id_contact-1-value")).getAttribute("value"));
     }
@@ -100,8 +105,8 @@ public class ActionsTest {
 
         driver.get("https://otus.ru/");
         driver.findElement(By.cssSelector(".header3__button-sign-in-container")).click();
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector(".modal-container[data-modal-id='new-log-reg']:not(.hide-top)"))));
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector("[type='text'][name='email']:not(.hide)"))));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".modal-container[data-modal-id='new-log-reg']:not(.hide-top)")));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[type='text'][name='email']:not(.hide)")));
         driver.findElement(By.cssSelector("[type='text'][name='email']:not(.hide)")).sendKeys(login);
         driver.findElement(By.cssSelector(".new-input[name='password']")).sendKeys(password);
         driver.findElement(By.cssSelector(".new-button[type='submit']")).submit();
