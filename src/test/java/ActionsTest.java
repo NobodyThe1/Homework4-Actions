@@ -62,9 +62,9 @@ public class ActionsTest {
         action.moveToElement(driver.findElement(By.cssSelector(".js-lk-cv-dependent-master"))).click().perform();
         driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='Россия']")).click();
         wait.until(ExpectedConditions.attributeContains(By.cssSelector(".js-lk-cv-dependent-master > div"), "class", "hide"));
+        action.moveToElement(driver.findElement(By.cssSelector(".js-lk-cv-dependent-slave-city"))).click();
         wait.until(ExpectedConditions.not(ExpectedConditions.attributeContains(By.cssSelector
                 (".js-lk-cv-dependent-slave-city > div"), "class", "hide")));
-        action.moveToElement(driver.findElement(By.cssSelector(".js-lk-cv-dependent-slave-city"))).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".js-custom-select-option[title='Москва']")));
         driver.findElement(By.cssSelector(".js-custom-select-option[title='Москва']")).click();
         action.moveToElement(driver.findElement(By.cssSelector("[name='english_level'] ~ div"))).click().perform();
