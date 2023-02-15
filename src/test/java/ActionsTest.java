@@ -61,20 +61,23 @@ public class ActionsTest {
         driver.findElement(By.cssSelector(".input[name='date_of_birth']")).sendKeys("11.11.1991");
         action.moveToElement(driver.findElement(By.cssSelector(".js-lk-cv-dependent-master"))).click().perform();
         driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='Россия']")).click();
-        action.moveToElement(driver.findElement(By.cssSelector(".js-lk-cv-dependent-slave-city"))).click().perform();
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".js-custom-select-option[title='Москва']")));
+        wait.until(ExpectedConditions.attributeContains(By.cssSelector(".js-lk-cv-dependent-master > div"), "class", "hide"));
+        wait.until(ExpectedConditions.not(ExpectedConditions.attributeContains(By.cssSelector
+                (".js-lk-cv-dependent-slave-city > div"), "class", "hide")));
+        action.moveToElement(driver.findElement(By.cssSelector(".js-lk-cv-dependent-slave-city"))).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".js-custom-select-option[title='Москва']")));
         driver.findElement(By.cssSelector(".js-custom-select-option[title='Москва']")).click();
         action.moveToElement(driver.findElement(By.cssSelector("[name='english_level'] ~ div"))).click().perform();
         driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='Средний (Intermediate)']")).click();
 
         action.moveToElement(driver.findElement(By.cssSelector("input[name='contact-0-service']~div"))).click().perform();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("id_contact-0-value")));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#id_contact-0-value")));
         driver.findElement(By.cssSelector("#id_contact-0-value")).clear();
         driver.findElement(By.cssSelector("[data-num] [data-selected-option-class] label ~ *:not(.hide) button[title='WhatsApp']")).click();
         driver.findElement(By.cssSelector("#id_contact-0-value")).sendKeys("+7 999 123 45 67");
         driver.findElement(By.cssSelector(".js-lk-cv-custom-select-add")).click();
         action.moveToElement(driver.findElement(By.cssSelector("input[name='contact-1-service']~div"))).click().perform();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("id_contact-1-value")));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#id_contact-1-value")));
         driver.findElement(By.cssSelector("#id_contact-1-value")).clear();
         driver.findElement(By.cssSelector("[data-num] [data-selected-option-class] label ~ *:not(.hide) button[data-value='telegram']")).click();
         driver.findElement(By.cssSelector("#id_contact-1-value")).sendKeys("+7 999 876 54 32");
@@ -95,8 +98,8 @@ public class ActionsTest {
         Assertions.assertEquals("Россия", driver.findElement(By.cssSelector(".js-lk-cv-dependent-master")).getText());
         Assertions.assertEquals("Москва", driver.findElement(By.cssSelector(".js-lk-cv-dependent-slave-city")).getText());
         Assertions.assertEquals("Средний (Intermediate)", driver.findElement(By.cssSelector("[name='english_level'] ~ div")).getText());
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("id_contact-0-value")));
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("id_contact-1-value")));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#id_contact-0-value")));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#id_contact-1-value")));
         Assertions.assertEquals("+7 999 876 54 32", driver.findElement(By.cssSelector("#id_contact-0-value")).getAttribute("value"));
         Assertions.assertEquals("+7 999 123 45 67", driver.findElement(By.cssSelector("#id_contact-1-value")).getAttribute("value"));
     }
