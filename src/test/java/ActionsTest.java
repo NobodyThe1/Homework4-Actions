@@ -62,12 +62,13 @@ public class ActionsTest {
         action.moveToElement(driver.findElement(By.cssSelector(".js-lk-cv-dependent-master"))).click().perform();
         driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='Россия']")).click();
         wait.until(ExpectedConditions.attributeContains(By.cssSelector(".js-lk-cv-dependent-master > div"), "class", "hide"));
-        action.moveToElement(driver.findElement(By.cssSelector(".js-lk-cv-dependent-slave-city"))).click();
+        action.moveToElement(driver.findElement(By.cssSelector(".js-lk-cv-dependent-slave-city"))).click().build().perform();
         wait.until(ExpectedConditions.not(ExpectedConditions.attributeContains(By.cssSelector
                 (".js-lk-cv-dependent-slave-city > div"), "class", "hide")));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".js-custom-select-option[title='Москва']")));
         driver.findElement(By.cssSelector(".js-custom-select-option[title='Москва']")).click();
-        action.moveToElement(driver.findElement(By.cssSelector("[name='english_level'] ~ div"))).click().perform();
+        action.moveToElement(driver.findElement(By.cssSelector("[name='english_level'] ~ div"))).click().build().perform();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("button.lk-cv-block__select-option[title='Средний (Intermediate)']")));
         driver.findElement(By.cssSelector("button.lk-cv-block__select-option[title='Средний (Intermediate)']")).click();
 
         action.moveToElement(driver.findElement(By.cssSelector("input[name='contact-0-service']~div"))).click().perform();
@@ -98,8 +99,8 @@ public class ActionsTest {
         Assertions.assertEquals("Россия", driver.findElement(By.cssSelector(".js-lk-cv-dependent-master")).getText());
         Assertions.assertEquals("Москва", driver.findElement(By.cssSelector(".js-lk-cv-dependent-slave-city")).getText());
         Assertions.assertEquals("Средний (Intermediate)", driver.findElement(By.cssSelector("[name='english_level'] ~ div")).getText());
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#id_contact-0-value")));
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#id_contact-1-value")));
+        //wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#id_contact-0-value")));
+        //wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#id_contact-1-value")));
         Assertions.assertEquals("+7 999 876 54 32", driver.findElement(By.cssSelector("#id_contact-0-value")).getAttribute("value"));
         Assertions.assertEquals("+7 999 123 45 67", driver.findElement(By.cssSelector("#id_contact-1-value")).getAttribute("value"));
     }
